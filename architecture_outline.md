@@ -17,6 +17,9 @@
 * Stores all of the feedback instances
 * Querying for reviews on certain user profiles
 
+4. Nginx Service
+* Acts as both an API gateway and load balancer. All API requests are routed through the gateway and it accordingly calls the services. Also balances server load by creating upstream service instances if necessary and spreads load across them.
+
 **Data Flow:** Description of how health check information flows through your system
 
 *Full Core Workflow*

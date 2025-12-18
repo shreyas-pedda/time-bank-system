@@ -1,11 +1,19 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import ValidationError
-import redis
+import datetime
+import logging
 import os
 import uuid
-import datetime
+
+import redis
+from fastapi import FastAPI, HTTPException
+from pydantic import ValidationError
 
 app = FastAPI()
+
+# Logging
+LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
+logging.basicConfig(
+    level=LOG_LEVEL, format="%(asctime)s %(levelname)s %(name)s %(message)s")
+logger = logging.getLogger("feedback_service")
 
 redis_client = redis.Redis(
     host=os.getenv("REDIS_HOST", "redis"),
@@ -14,8 +22,11 @@ redis_client = redis.Redis(
 )
 
 # API Endpoints
+
+
 @app.get("/health")
 async def health_check():
+    logger.info("event=health_check service=feedback_service")
     return {
         "service": "feedback_service",
         "status": "healthy",
@@ -34,4 +45,3 @@ async def health_check():
             }
         }
     }
-
